@@ -1,0 +1,26 @@
+[
+    {
+        "name": "MD Elektronic OWB",
+        "adress": "Dob\u0159ansk\u00e1 629, 332 14 Chote\u0161ov",
+        "mobile": "771151728",
+        "email": "ganna.g@seznam.cz"
+    },
+    {
+        "name": "Novem OWB",
+        "adress": "L\u00ed\u0161\u0165ansk\u00e1 520, 330 33 M\u011bsto Tou\u0161kov",
+        "mobile": "771147237",
+        "email": "dimailchuk@icloud.com"
+    },
+    {
+        "name": "Novem OP",
+        "adress": "L\u00ed\u0161\u0165ansk\u00e1 520, 330 33 M\u011bsto Tou\u0161kov",
+        "mobile": "771147237",
+        "email": "dimailchuk@icloud.com"
+    },
+    {
+        "name": "test place",
+        "adress": "address",
+        "mobile": "",
+        "email": ""
+    }
+]
