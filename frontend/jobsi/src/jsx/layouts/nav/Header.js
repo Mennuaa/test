@@ -4,12 +4,30 @@ import { Link } from "react-router-dom";
 
 import LogoutPage from './Logout';
 
-
+import { useDispatch } from 'react-redux';
+import { setHostelData } from '../../../store/actions/HostelActions';
 
 // import { IMAGES, SVGICON } from "../../constant/theme";
 import Logoutbtn from "./Logoutbtn";
 
 const NotificationBlog =() =>{
+	const dispatch = useDispatch();
+
+	// Check if the hotel name is 'Hostel' and return a Link component
+	
+		const clickToNotification = (hostel) => {
+			fetch('/ubytovny.json')
+      .then(response => response.json())
+      .then(data => {
+		const result = data.filter(ubytovna => ubytovna.name.toLowerCase().includes(hostel.toLowerCase()));
+		dispatch(setHostelData(...result));
+		console.log(result);
+      })
+      .catch(error => {
+        console.error('Error fetching ubytovny data:', error);
+      });
+			
+		  };
 	
 const [notifications, setNotifications] = useState([]);
 useEffect(() => {
@@ -29,41 +47,46 @@ useEffect(() => {
       });
   }, []);
   const highlightNames = (text, userName, hotelName, roomName) => {
-    // Create a regex pattern to match the names
-    const namesPattern = [userName, hotelName, roomName].filter(Boolean).join('|');
-    if (!namesPattern) {
-      // If no names are provided, return the text in a plain span
-      return <span>{text}</span>;
-    }
+	// Create a regex pattern to match the names
+	const namesPattern = [userName, hotelName, roomName].filter(Boolean).join('|');
+	if (!namesPattern) {
+	  // If no names are provided, return the text in a plain span
+	  return <span>{text}</span>;
+	}
+  
+	const parts = text.split(new RegExp(`(${namesPattern})`, 'gi'));
+	return (
+	  <>
+		{parts.map((part, index) => {
+		  let style = {};
+		  let clickHandler = null;
+  
+		  if (userName && part.toLowerCase() === userName.toLowerCase()) {
+			style = { color: 'blue' };
+			clickHandler = () => alert(`User: ${part}`);
+		  } else if (hotelName && part.toLowerCase() === hotelName.toLowerCase()) {
 
-    const parts = text.split(new RegExp(`(${namesPattern})`, 'gi'));
-    return (
-      <>
-        {parts.map((part, index) => {
-          let style = {};
-          let clickHandler = null;
-
-          if (userName && part.toLowerCase() === userName.toLowerCase()) {
-            style = { color: 'blue' };
-            clickHandler = () => alert(`User: ${part}`);
-          } else if (hotelName && part.toLowerCase() === hotelName.toLowerCase()) {
-            style = { color: 'green' };
-            clickHandler = () => alert(`Hotel: ${part}`);
-          } else if (roomName && part.toLowerCase() === roomName.toLowerCase()) {
-            style = { color: 'orange' };
-            clickHandler = () => alert(`Room: ${part}`);
-          }
-
-          return (
-            <span key={index} style={style} onClick={clickHandler}>
-              {part}
-            </span>
-          );
-        })}
-      </>
-    );
+			  return (
+				<Link  to={`/profile-hostels/${part}`} key={index}  style={{ color: 'green' }}>
+				  {part}
+				</Link>
+			  );
+		  } else if (roomName && part.toLowerCase() === roomName.toLowerCase()) {
+			style = { color: 'orange' };
+			clickHandler = () => alert(`Room: ${part}`);
+		  }
+  
+		  // If part is not 'Hostel', return a span
+		  return (
+			<span key={index} style={style} onClick={clickHandler}>
+			  {part}
+			</span>
+		  );
+		})}
+	  </>
+	);
   };
-
+  
 
 
 

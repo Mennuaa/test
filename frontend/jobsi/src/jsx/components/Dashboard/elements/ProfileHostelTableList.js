@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import RoomsOffcanvas from '../../../constant/RoomHostelsOffcanvas'; 
 import EmployeeToRoomOffcanvas from '../../../constant/EmployeeToRoomOffcanvas';
 import CheckOutOffcanvas from '../../../constant/CheckOutOffcanvas';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setRoomData } from '../../../../store/actions/RoomActions';
@@ -10,15 +11,7 @@ import { setRoomData } from '../../../../store/actions/RoomActions';
 
 
 const ProfileHostelTableList = () => {
-    const hostelData = useSelector((state) => state.hostel.hostelData);
-
-    const dispatch = useDispatch();
-
-    const handleLinkClickRoom = (hostel) => {
-    dispatch(setRoomData(hostel));
-  };
-          
-    const [dataUpdateTrigger, setDataUpdateTrigger] = useState(false);
+  const [dataUpdateTrigger, setDataUpdateTrigger] = useState(false);
     const [selectedRoom, setselectedRoom] = useState(null);
     const room = useRef();   
     const editRoom = useRef();
@@ -27,61 +20,74 @@ const ProfileHostelTableList = () => {
     const [Rooms, setRooms] = useState([]);
     const [RoomsCapacity, setRoomsCapacity] = useState([]);
     const [hostels, setHostels] = useState([]);
+  const [hostelData, setHostelData] = useState({});
+  const dispatch = useDispatch();
+  let { hostelName } = useParams();
+  
+  useEffect(() => {
+    fetch('/ubytovny.json')
+      .then(response => response.json())
+      .then(data => {
+        const result = data.find(ubytovna => 
+          ubytovna.name.toLowerCase() === hostelName.toLowerCase()
+        ); // Assuming you want a single match, use find instead of filter
+  
+        setHostelData(result || {}); // Set hostelData or an empty object if no result is found
+      })
+      .catch(error => {
+        console.error('Error fetching ubytovny data:', error);
+      });
+  }, [hostelName]); // Dependency array with hostelName
+  
+  useEffect(() => {
+    if (!hostelData.name) return; // If hostelData is not yet set, don't run the fetchData
+  
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/pokoje.json?${Date.now()}`);
+        const data = await response.json();
+        const thisRooms = data.filter(room => room.ubytovna === hostelData.name);
+  
+        const sortedRooms = thisRooms.sort((roomA, roomB) => {
+          // Функция для разбора id remains unchanged
+          const parseId = id => {
+            // ... same function as you provided
+          };
+  
+          const parsedA = parseId(roomA.id);
+          const parsedB = parseId(roomB.id);
+  
+          // ... same comparison logic as you provided
+        });
+  
+        setRooms(sortedRooms);
+      } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+      }
+    };
+  
+    fetchData();
+  }, [hostelData]); // Dependency array with hostelData to run fetchData after hostelData is set
+  
+  // Further logic can be added here if needed
+  
+  
+
+
+    const handleLinkClickRoom = (hostel) => {
+    dispatch(setRoomData(hostel));
+  };
+          
+    
     
 
   useEffect(() => {
     fetchData77();
-    fetchData();
+    // fetchData();
     fetchDataPokoje();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`/pokoje.json?${Date.now()}`);
-      const data = await response.json();
-      console.log('data-now',data);
-      const thisRooms = data.filter(room => room.ubytovna === hostelData.name);
-      console.log('thisRooms-now',thisRooms);
 
-      const sortedRooms = thisRooms.slice().sort((roomA, roomB) => {
-  // Функция для разбора id
-  const parseId = (id) => {
-    const match = id.match(/(\d+)([A-Za-z]*)/);
-    if (match) {
-      return {
-        num: parseInt(match[1], 10),
-        str: match[2],
-      };
-    } else {
-      // Если формат id не соответствует ожиданиям, вернуть значения по умолчанию
-      return {
-        num: 0,
-        str: '',
-      };
-    }
-  };
-
-  const parsedA = parseId(roomA.id);
-  const parsedB = parseId(roomB.id);
-
-  // Сравнение числовой части
-  if (parsedA.num < parsedB.num) {
-    return -1;
-  } else if (parsedA.num > parsedB.num) {
-    return 1;
-  } else {
-    // Если числовые части равны, сравнение строковой части
-    return parsedA.str.localeCompare(parsedB.str);
-  }
-});
-
-console.log('sortedRooms-now', sortedRooms);
-
-      setRooms(sortedRooms);
-    } catch (error) {
-      console.error('Ошибка при загрузке данных:', error);
-    }
-  };
 
   const fetchDataPokoje = async () => {
     try {
@@ -101,14 +107,12 @@ console.log('sortedRooms-now', sortedRooms);
         }
       });
 
-      console.log('1-roomCount', roomCount);
-  
       const roomCountArray = Object.keys(roomCount).map((key) => {
         const [ubytovna, room] = key.split(' - ');
         return { ubytovna, room, count: roomCount[key] };
       });
 
-      console.log('1-roomCountArray', roomCountArray);
+     
 
        setRoomsCapacity(roomCountArray);
   
@@ -131,7 +135,7 @@ console.log('sortedRooms-now', sortedRooms);
 
   useEffect(() => {
     fetchData77();
-    fetchData();
+    // fetchData();
     fetchDataPokoje();
   }, [dataUpdateTrigger]);
 
@@ -294,7 +298,7 @@ console.log('sortedRooms-now', sortedRooms);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  {console.log('Rooms-now',Rooms)}
+                                
                                 {Rooms.slice().reverse().map((room, index) => (
                                         <tr key={index}>
                                             
@@ -389,8 +393,7 @@ console.log('sortedRooms-now', sortedRooms);
                 (() => {
                   const roomData = RoomsCapacity.find((data) => data.room === room.id);
                   if (roomData) {
-                    console.log('roomData.count', roomData.count);
-                    console.log('roomData', roomData)
+                   
                     return  "pointerNone";
                   } else {
                     return "else0";

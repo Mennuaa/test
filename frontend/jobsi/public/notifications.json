@@ -12,13 +12,13 @@
         "created_date":"07-11-2023"
     },
     {
-        "notification":"No one was occupied in the Room Pretty for 15 days",
-        "room_name": "Room Pretty",
+        "notification":"No one was occupied in the Hilton for 15 days",
+        "hotel_name": "Hilton",
         "created_date":"07-11-2023"
     },
     {
-        "notification":"The employee was evicted from the Cool hotel but remained at work",
-        "hotel_name":"Cool hotel",
+        "notification":"The employee was evicted from the QWE but remained at work",
+        "hotel_name":"QWE",
         "created_date":"07-11-2023"
     },
     {

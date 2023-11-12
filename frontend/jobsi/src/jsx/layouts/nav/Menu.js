@@ -90,6 +90,11 @@ export const MenuList = [
         iconStyle: SVGICON.ProjectsSidbar,
         to: '/performance',
     },
+    {   
+        title:'Blacklist',
+        iconStyle: SVGICON.User,
+        to: '/black-list',
+    },
     // {   
     //     title:'Blog',
     //     // update:"New",

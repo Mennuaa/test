@@ -110,6 +110,7 @@ import Error503 from "./pages/Error503";
 import { ThemeContext } from "../context/ThemeContext";
 import Notification from "./components/Dashboard/Notifications";
 import Notifications from "./components/Dashboard/Notifications";
+import Blacklist from "./components/Dashboard/BlackList";
 
 const allroutes = [
   // Dashboard
@@ -123,7 +124,7 @@ const allroutes = [
   { url: "blog", component: <Blog /> },
   { url: "hostels", component: <Hostels /> },
   { url: "tovarny", component: <Tovarny /> },
-  { url: "profile-hostels", component: <ProfileHostels /> },
+  { url: "profile-hostels/:hostelName", component: <ProfileHostels /> },
   { url: "profile-room", component: <ProfileRoom /> },
   { url: "profile-tovarna", component: <ProfileTovarnaTableList /> },
   { url: "manage-client", component: <ManageClient /> },
@@ -131,6 +132,8 @@ const allroutes = [
   { url: "finance", component: <Finance /> },
   { url: "employee", component: <Employees /> },
   { url: "task", component: <Task /> },
+  { url: "black-list", component: <Blacklist /> },
+  { url: "notifications", component: <Notifications /> },
   //Apps
   { url: "contacts", component: <Contacts /> },
   { url: "user", component: <User /> },
@@ -157,6 +160,8 @@ const allroutes = [
   { url: "ecom-invoice", component: <Invoice /> },
   { url: "ecom-customers", component: <Customers /> },
   // Chart
+
+
   { url: "chart-sparkline", component: <SparklineChart /> },
   { url: "chart-chartjs", component: <ChartJs /> },
   { url: "chart-apexchart", component: <ApexChart /> },
@@ -234,8 +239,6 @@ const Markup = () => {
           ))}
         </Route>
         <Route path='*' element={<NotFound />} />
-        
-        <Route path='/notifications' element={<Notifications/>} />
       </Routes>
       <ScrollToTop />
     </>

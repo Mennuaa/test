@@ -40,10 +40,24 @@ const DoughnutChartComponent = ({ strediskoCounts, strediskaGraf }) => {
       },
       legend: {
         position: 'top',
+         labels: {
+        usePointStyle: true, // to use rounded points instead of boxes
+        boxWidth: 50, // the width of the legend color box
+        padding: 20, // space between legend entries
+        // Generate custom legend labels with rounded corners
+        // generateLabels: (chart) => {
+        //   const datasets = chart.data.datasets;
+        //   return datasets.map((dataset, i) => ({
+        //     text: dataset.label,
+        //     fillStyle: dataset.backgroundColor,
+        //     // Additional customization can go here
+        //   }));
+        // }
+      },
       },
       title: {
         display: true,
-        text: 'Doughnut Chart',
+        text: 'Users',
       },
     },
   };

@@ -1,34 +1,83 @@
-import React,{useContext, useEffect} from 'react';
-
-//Import Components
-// import { ThemeContext } from "../../../context/ThemeContext";
+import React, {useState, useRef, useEffect} from 'react';
+import EmployeesTableList from './elements/EmployeesTableList';
 import MainPagetitle from '../../layouts/MainPagetitle';
-import HostelsTableList from './elements/HostelsTableList';
+import NotificationsTable from './elements/NotificationsTable';
 
-const Notifications = () => {
-		
-	return(
+
+
+const Notifications = () => {  
+  
+    return(
 		<>			
-			<MainPagetitle mainTitle="Hostels" pageTitle="Hostels" parentTitle="Home"  />
+			<MainPagetitle mainTitle="Notifications" pageTitle="Notifications" parentTitle="Home"  />
 			<div className="container-fluid">
 				<div className="row">
 					<div className="col-xl-9 wid-100">
 						<div className="row">
-							{/* <CardWidget /> */}
-							<div className="col-xl-8">
-								{/* <ProjectOverviewTab /> */}
-							</div>
+						{/* <div className="col-xl-3 col-sm-6">
+                <div className="card same-card">
+                    <div className="card-body d-flex align-items-center  py-2">                        
+                        <AllProjectDonutChart
+						
+						 />
+                        <ul className="project-list">
+                            <li><h6>Pracovníci</h6></li>
+                            <li>
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="10" height="10" rx="3" fill="#3AC977"/>
+                                </svg>{" "}
+                                Pracuje
+                            </li>
+                            <li>
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="10" height="10" rx="3" fill="var(--primary)"/>
+                                </svg>{" "}
+                                Ne pracuje
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+				
+            </div> */}
+			
+							{/* <div className="col-xl-3 col-sm-6">
+							<div className="card same-card">
+                    <div className="card-body d-flex align-items-center  py-2">                        
+                        <AllProjectDonutChart2
+						
+						 />
+                        <ul className="project-list">
+                            <li><h6>Ubytovny</h6></li>
+                            <li>
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="10" height="10" rx="3" fill="#3AC977"/>
+                                </svg>{" "}
+                                Volno
+                            </li>
+                            <li>
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="10" height="10" rx="3" fill="var(--primary)"/>
+                                </svg>{" "}
+                                Obsazeno
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+							</div> */}
 							<div className="col-xl-4">
 								{/* <ToDoList /> */}
 							</div>
 
 						</div>
 					</div>
+					{/* new commit */}
 					<div className="col-xl-3 t-earn">
 						{/* <EarningBlog /> */}
 					</div>
 					<div className="col-xl-6 active-p">
-						{/* <ActiveProjects /> */}
+						{/* <ActiveProjects /> 
 					</div>
 					<div className="col-xl-6 col-md-6 flag">
 						{/* <ActiveUserMap />		 */}
@@ -44,28 +93,15 @@ const Notifications = () => {
 					</div>
 
 					{/* <div className="col-xl-3 col-md-6 up-shd">
-						<ProjectStatusBlog  title="Projects Status"/>
-					</div> */}
-
-{/* <div className="testik">
-{ <form action="save_data.php" method="post">
-  
-  <input type="text" name="name" placeholder="Ваше имя"/>
-  <input type="email" name="email" placeholder="Ваш Email"/>
-  <button type="submit">Отправить</button>
-</form> }
-
-<form method="post" action="delete_file.php">
-        <input type="submit" value="Удалить файл"/>
-    </form>
-
+							 <ProjectStatusBlog  title="Projects Status"/> 
 					</div> */}
 					<div className="col-xl-9 bst-seller">
-						<HostelsTableList />
+						<NotificationsTable />
 					</div>
 				</div>							
 			</div>			
 		</>
-	)
-}
+	);
+};
+
 export default Notifications;

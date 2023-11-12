@@ -5,11 +5,11 @@ import axios from 'axios';
 
 
 const CheckOutOffcanvas = forwardRef((props, ref) => {
+  console.log(props , ref);
     const { selectedRoom, setDataUpdateTrigger} = props;
     const [checkOut , setcheckOut] = useState(false);
     const [employesWithRoom, setWithRoom] = useState([]);
     const [choosedFreeEmploye, setChoosedEmploye] = useState({});
-
   useEffect(() => {
     
     const fetchDataCheckOut = async () => {

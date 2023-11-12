@@ -1,15 +1,41 @@
-import React,{useContext, useEffect} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 //Import Components
 import { ThemeContext } from "../../../context/ThemeContext";
 import MainPagetitle from '../../layouts/MainPagetitle';
 import ProfileHostelTableList from './elements/ProfileHostelTableList';
+import { useParams } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { setRoomData } from '../../../store/actions/RoomActions';
 
 const ProfileHostels = () => {
-		
-	return(
-		<>			
-			<MainPagetitle mainTitle="Hostel profile" pageTitle="Hostel profile" parentTitle="Home"  />
+
+	const [hostelData , setHostelData] = useState({});
+	const dispatch = useDispatch();
+	let { hostelName } = useParams();
+	  useEffect(()=>{
+		  fetch('/ubytovny.json')
+		  .then(response => response.json())
+		  .then(data => {
+			const result = data.filter(ubytovna => ubytovna.name.toLowerCase().includes(hostelName.toLowerCase()));
+		console.log('naerl', result);
+		setHostelData(...result);
+		setRoomData(...result);
+  
+  
+		  })
+		  .catch(error => {
+			console.error('Error fetching ubytovny data:', error);
+		  });
+	  console.log(hostelData);
+	  },[])
+  
+		  
+
+	return (
+		<>
+			<MainPagetitle mainTitle="Hostel profile" pageTitle="Hostel profile" parentTitle="Home" />
 			<div className="container-fluid">
 				<div className="row">
 					<div className="col-xl-9 wid-100">
@@ -47,7 +73,7 @@ const ProfileHostels = () => {
 						<ProjectStatusBlog  title="Projects Status"/>
 					</div> */}
 
-{/* <div className="testik">
+					{/* <div className="testik">
 { <form action="save_data.php" method="post">
   
   <input type="text" name="name" placeholder="Ваше имя"/>
@@ -63,8 +89,8 @@ const ProfileHostels = () => {
 					<div className="col-xl-9 bst-seller">
 						<ProfileHostelTableList />
 					</div>
-				</div>							
-			</div>			
+				</div>
+			</div>
 		</>
 	)
 }

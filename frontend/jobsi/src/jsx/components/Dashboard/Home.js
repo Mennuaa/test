@@ -9,6 +9,8 @@ import HostelsTableList from './elements/HostelsTableList';
 import TovarnyTableList from './elements/TovarnyTableList';
 import ProjectStatusBlog from '../Dashboard/elements/ProjectStatusBlog';
 import Projects from '../Dashboard/Projects';
+import BasicArea from '../charts/Chartjs/basicArea';
+import StackedBarChart from '../charts/Chartjs/stacked-bar-chart';
 
 const Home = () => {
         const [employesNoWork, setEmployesNoWork] = useState([]);
@@ -33,7 +35,6 @@ const Home = () => {
             const stredisko = employee.stredisko;
             updatedCounts[stredisko] = (updatedCounts[stredisko] || 0) + 1;
           });
-          console.log('employesAll', updatedCounts);
           setStrediskoCounts(updatedCounts);
         }, [employesAll, strediskaGraf]);
       
@@ -69,10 +70,6 @@ const Home = () => {
             setEmployesNoWork(countEmployesWithNoWork);
             setEmployesLive(countEmployesWithLive);
             setEmployesNoLive(countEmployesWithNoLive);
-            console.log(countEmployesWithWork);
-            console.log(countEmployesWithNoWork);
-            console.log(countEmployesWithLive);
-            console.log(countEmployesWithNoLive);
         
           } catch (error) {
             console.error('Ошибка при загрузке данных:', error);
@@ -148,7 +145,8 @@ const Home = () => {
 
             </div>
              <div className="col-xl-9">
-            <Projects />
+            {/* <Projects /> */}
+            <StackedBarChart />
             </div> 
 						
             </div>

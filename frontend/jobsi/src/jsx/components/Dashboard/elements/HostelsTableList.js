@@ -4,13 +4,12 @@ import { IMAGES } from '../../../constant/theme';
 import HostelsOffcanvas from '../../../constant/HostelsOffcanvas'; 
 import EditHostelsOffcanvas from '../../../constant/EditHostelsOffcanvas';
 import { useDispatch } from 'react-redux';
-import { setHostelData } from '../../../../store/actions/HostelActions';
  
 const HostelsTableList = () => {
     const dispatch = useDispatch();
 
     const handleLinkClick = (hostel) => {
-    dispatch(setHostelData(hostel));
+      console.log('deded', hostel);
   };
 
     const [dataUpdateTrigger, setDataUpdateTrigger] = useState(false);
@@ -261,7 +260,7 @@ const HostelsTableList = () => {
                                                 <div className="products">
                                                     {/* <img src={item.image} className="avatar avatar-md" alt="" /> */}
                                                     <div>
-                                                        <h6><Link to={"/profile-hostels"} onClick={() => handleLinkClick(hostel)}>{hostel.name}</Link></h6>
+                                                        <h6><Link to={`/profile-hostels/${hostel.name}`}>{hostel.name}</Link></h6>
                                                         
                                                     </div>	
                                                 </div>

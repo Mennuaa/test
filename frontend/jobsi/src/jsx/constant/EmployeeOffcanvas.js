@@ -143,7 +143,6 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
               room.ubytovna === selectedSelect 
           );
 
-          console.log('filteredRooms', filteredRooms);
 
           const roomCount = {};
 
@@ -158,7 +157,6 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
         }
       });
 
-      console.log('roomCount', roomCount);
     
       const numberOfKeys = Object.keys(roomCount).length;
 
@@ -169,7 +167,6 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
         return { ubytovna, room, count: roomCount[key] };
       });
 
-      console.log('1-roomCountArray', roomCountArray);
 
       const roomsWithFreeSpace = filteredRooms.map((room) => {
         const countObj = roomCountArray.find((obj) => obj.ubytovna === room.ubytovna && obj.room === room.id);
@@ -183,17 +180,14 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
             return { ...room, freeSpace: room.quantity };
         }
     });
-    
-    console.log('roomsWithFreeSpace', roomsWithFreeSpace);
 
     const RoomsWithSpace = roomsWithFreeSpace.filter((room) => room.freeSpace > 0);
 
-    console.log('RoomsWithSpace', RoomsWithSpace);
+  
 
   setRooms(RoomsWithSpace);
 } else {
   setRooms(filteredRooms);
-  console.log('filteredRooms-filteredRooms',filteredRooms);
 }
           // setRooms(data);
         } catch (error) {
@@ -242,7 +236,7 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
        
         fetchDataPokoje();
         setTimeout(() => {
-          console.log('Rooms1', Rooms);
+         
         },1000);
       }, [selectedSelect]);
     
@@ -251,7 +245,6 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
         
         setSelectedSelect(selectedHostelName);
         setTimeout(() => {
-        console.log('Hotel: selectedSelect', selectedSelect);
       },900);
       };
 
@@ -378,9 +371,6 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
           <label className="form-label">Pokoj</label>
           <select name="pokoj" className="default-select form-control">
             <option data-display="Select">-</option>
-            {setTimeout(() => {
-              console.log('Rooms2', Rooms)
-            },2000)}
             {Rooms.map((room, index) => (
               
               <option

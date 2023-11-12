@@ -43,11 +43,23 @@ const HostelsOffcanvas = forwardRef((props, ref) => {
           alert('Ubytovna již existuje.');
           return;
         }
-  
+        fetch('http://localhost:8888/jobsi/backend/php.php')
+        .then(response => response.json())
+        .then(data => {
+          if (data.exists) {
+            console.log('File exists');
+          } else {
+            console.log('File does not exist');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      
         // Отправка данных на сервер
         axios.post('/save_hostels.php', formData2)
           .then(response => {
-            
+            console.log(response);
             setDataUpdateTrigger((prev) => !prev);
           })
           .catch(error => {
