@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-
+import './stacked-bar-chart.css';
 import Chart from 'chart.js/auto'; // Import Chart
 
 
@@ -8,7 +8,25 @@ const StackedBarChart = () => {
   const [ubytovny, setUbytovny] = useState([]);
   const [Rooms, setRooms] = useState([]);
   const [clients, setClients] = useState([]);
-
+  const [chartHeight, setChartHeight] = useState('500px'); // Default height
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) { // Assuming 768px as a breakpoint for mobile devices
+        setChartHeight('300px'); // Adjust this value as needed for mobile
+      } else {
+        setChartHeight('500px'); // Default height for non-mobile devices
+      }
+    };
+  
+    // Call handleResize on component mount and add event listener for resize
+    handleResize();
+    // window.addEventListener('resize', handleResize);
+  
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  
   useEffect(() => {
     fetchDataClients();
     fetchDataRooms();
@@ -36,7 +54,13 @@ const StackedBarChart = () => {
     }
   };
 
-
+  const sortByTotalBeds = () => {
+    ubytovny.sort((a, b) => {
+      const totalBedsA = (hostelBedInfo[a]?.totalBeds || 0);
+      const totalBedsB = (hostelBedInfo[b]?.totalBeds || 0);
+      return totalBedsB - totalBedsA; // Sort in descending order
+    });
+  };
   const hostelBedInfo = {};
   Rooms.forEach((room) => {
     const { ubytovna, quantity } = room;
@@ -72,7 +96,14 @@ useEffect(() => {
       const data = await response.json();
 
       // Create an array to hold the names
-      const names = data.map(element => element.name);
+      const sortedData = data.sort((a, b) => {
+        const totalBedsA = (hostelBedInfo[a.name]?.totalBeds || 0);
+        const totalBedsB = (hostelBedInfo[b.name]?.totalBeds || 0);
+        return totalBedsB - totalBedsA; // Sort in descending order
+      });
+
+      // Extract the names after sorting
+      const names = sortedData.map(element => element.name);
 
       // Update the state with all names
       setUbytovny(names);
@@ -80,12 +111,11 @@ useEffect(() => {
       console.error('Ошибка при загрузке данных:', error);
     }
   };
+  sortByTotalBeds();
 
   fetchUbytovny();
 }, []);
-const totalBedsData = ubytovny.map(name => hostelBedInfo[name]?.totalBeds || 0);
-const occupiedBedsData = ubytovny.map(name => hostelBedInfo[name]?.occupiedBeds || 0);
-const availableBedsData = ubytovny.map(name => (hostelBedInfo[name]?.totalBeds || 0) - (hostelBedInfo[name]?.occupiedBeds || 0));
+
 const whiteBackgroundPlugin = {
   id: 'whiteBackground',
   beforeDraw: (chart) => {
@@ -98,8 +128,21 @@ const whiteBackgroundPlugin = {
 };
 
 
+
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 6; 
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
+};
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentUbytovny = ubytovny.slice(indexOfFirstItem, indexOfLastItem);
+const occupiedBedsData = currentUbytovny.map(name => hostelBedInfo[name]?.occupiedBeds || 0);
+const availableBedsData = currentUbytovny.map(name => 
+  (hostelBedInfo[name]?.totalBeds || 0) - (hostelBedInfo[name]?.occupiedBeds || 0)
+);
 const data = {
-  labels: ubytovny,
+  labels: currentUbytovny,
   datasets: [
     {
       label: 'available Beds',
@@ -124,15 +167,9 @@ const containerStyles = {
   overflow: 'auto', // This enables scrolling
 };
 
-// Optionally, adjust the chart's size based on the data
-let chartWidth = '100%';
-let chartHeight = '100%';
-if (data.length > 20) {
-  chartWidth = '200%'; // Example: make the chart wider for horizontal scrolling
-  // chartHeight = '200%'; // Uncomment for vertical scrolling
-}
   const options = {
-  
+    maintainAspectRatio: false,
+    // responsive:true,
     scales: {
       y: {
         stacked: true,
@@ -164,7 +201,40 @@ if (data.length > 20) {
     <div className='header'>
       <h1 className='title'>Revenue Flow</h1>
     </div>
-    <Bar data={data} options={options}  style={{ backgroundColor:"#fff" , padding:"10px", borderRadius:"20px"}}/>
+  
+    <div>
+  <div className="pagination-container"  >
+  <div className="chartBox">
+  <Bar data={data} options={options}  style={{ backgroundColor:"#fff", padding:"10px", borderRadius:"10px" }}/>
+
+  </div>
+  
+  </div >
+  <div className="buttons">
+  <button 
+      onClick={() => handlePageChange(1)}
+      className={`pagination-button ${currentPage === 1 ? 'active' : ''}`}
+    >
+      First
+    </button>
+    {Array.from({ length: Math.ceil(ubytovny.length / itemsPerPage) }, (_, i) => (
+      <button 
+        key={i} 
+        onClick={() => handlePageChange(i + 1)}
+        className={`pagination-button ${currentPage === i + 1 ? 'active' : ''}`}
+      >
+        {i + 1}
+      </button>
+    ))}
+    <button 
+      onClick={() => handlePageChange(Math.ceil(ubytovny.length / itemsPerPage))}
+      className={`pagination-button ${currentPage === Math.ceil(ubytovny.length / itemsPerPage) ? 'active' : ''}`}
+    >
+      Last
+    </button>
+  </div>
+</div>
+
   </>
 )};
 

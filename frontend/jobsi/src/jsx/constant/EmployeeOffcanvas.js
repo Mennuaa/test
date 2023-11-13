@@ -17,7 +17,21 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
     const [email, setEmail] = useState('');
     const [serverEmails, setServerEmails] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-  
+    const [showBlacklistModal, setShowBlacklistModal] = useState(false);
+    const [blacklistModalMessage, setBlacklistModalMessage] = useState("");
+    const BlacklistModal = ({ show, onClose, message }) => {
+      if (!show) return null;
+    
+      return (
+        <div className="blacklist-modal-overlay">
+          <div className="blacklist-modal">
+            <h2>Notification</h2>
+            <p>{message}</p>
+            <button onClick={onClose}>Close</button>
+          </div>
+        </div>
+      );
+    };
     
     const generateRandomEmail = () => {
       let randomEmail;
@@ -113,7 +127,11 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
         // Отправка данных на сервер
         axios.post('/save_data.php', formData)
           .then(response => {
-          
+            console.log(response.data);
+            if (response.data.status === 'error') {
+              setBlacklistModalMessage(response.data.message);
+              setShowBlacklistModal(true);
+            }
             setDataUpdateTrigger((prev) => !prev);
           })
           .catch(error => {
@@ -121,6 +139,7 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
           });
   
         setAddEmploye(false);
+        
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       }
@@ -393,6 +412,11 @@ const EmployeeOffcanvas = forwardRef((props, ref) => {
                     </div>
 				</div>
 			</Offcanvas>     
+      <BlacklistModal
+      show={showBlacklistModal}
+      onClose={() => setShowBlacklistModal(false)}
+      message={blacklistModalMessage}
+    />
         </>
     );
 });

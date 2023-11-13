@@ -11,8 +11,14 @@ import { setRoomData } from '../../../../store/actions/RoomActions';
 
 
 const ProfileHostelTableList = () => {
+  const handleRoomAdded = () => {
+    setUpdateTrigger(prev => !prev); // Toggle updateTrigger to re-fetch rooms data
+};
+
   const [dataUpdateTrigger, setDataUpdateTrigger] = useState(false);
     const [selectedRoom, setselectedRoom] = useState(null);
+    const [updateTrigger, setUpdateTrigger] = useState(false);
+
     const room = useRef();   
     const editRoom = useRef();
     const addEmpToRoom = useRef();
@@ -452,7 +458,10 @@ const ProfileHostelTableList = () => {
             </div>           
             <RoomsOffcanvas 
                 ref={room}
+
+                onRoomAdded={handleRoomAdded}
                 Title="Add Hostel"
+                // setDataUpdateTrigger={setUpdateTrigger} 
                 setDataUpdateTrigger={setDataUpdateTrigger}
                 hostelData={hostelData}
             />

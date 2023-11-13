@@ -8,7 +8,8 @@ import AddToBlackList from '../../../constant/AddToBlackList';
 
 
 const BlackListTables = () => {
-   
+ 
+    
     const [dataUpdateTrigger, setDataUpdateTrigger] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState(null); // Добавляем состояние для хранения выбранного работника
     const employe = useRef();   

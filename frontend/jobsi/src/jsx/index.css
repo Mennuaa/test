@@ -710,3 +710,49 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 	height: auto;
 	display: contents;
 }
+.blacklist-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.blacklist-modal {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 80%;
+  text-align: center;
+}
+
+.blacklist-modal h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.blacklist-modal p {
+  color: #555;
+  margin: 20px 0;
+}
+
+.blacklist-modal button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.blacklist-modal button:hover {
+  background-color: #0056b3;
+}

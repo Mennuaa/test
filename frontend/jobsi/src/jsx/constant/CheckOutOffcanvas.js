@@ -20,6 +20,7 @@ const CheckOutOffcanvas = forwardRef((props, ref) => {
             const thisRoom = selectedRoom.id;
             const filteredData = data.filter(item => item.room === thisRoom);
             setWithRoom(filteredData);
+
         } catch (error) {
             console.error('Ошибка при загрузке данных:', error);
         }

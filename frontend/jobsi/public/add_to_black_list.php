@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = array(
         'name' => $name,
         'email' => $email,
-        'stredisko' => $stredisko,
-        'ubytovna' => $ubytovna,
+        'stredisko' => '',
+        'ubytovna' => '',
         'country' => $country,
         'mobile' => $mobile,
         'gender' => $gender,
-        'room' => $pokoj,
+        'room' => "",
         'registr' => $registr,
         'birth' => $birth,
     );

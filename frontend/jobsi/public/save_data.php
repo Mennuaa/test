@@ -5,8 +5,10 @@
 // The path to the JSON files
 $file_path = 'file.json';
 $notification_file_path = 'notifications.json';
+$blacklist_file_path = 'black-list.json';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
     $name = $_POST['name'];
     $email = $_POST['email'];
     $stredisko = $_POST['stredisko'];
@@ -14,10 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $country = $_POST['country'];
     $mobile = $_POST['mobile'];
     $gender = $_POST['gender'];
-    $pokoj = $_POST['pokoj'];
+    // $pokoj = $_POST['pokoj'];
     $registr = $_POST['registr'];
     $birth = $_POST['birth'];
+    $blacklist_data = file_exists($blacklist_file_path) ? file_get_contents($blacklist_file_path) : '';
+    $blacklist = $blacklist_data ? json_decode($blacklist_data, true) : [];
 
+    foreach ($blacklist as $blacklistedUser) {
+        if ($blacklistedUser['name'] == $name && $blacklistedUser['birth'] == $birth) {
+            // User is in blacklist, return a suitable response
+            echo json_encode(['status' => 'error', 'message' => 'User is in black list']);
+            return; 
+            die;// Stop further processing
+        }
+    }
     // Combine the new user data
     $data = [
         'name' => $name,
@@ -27,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'country' => $country,
         'mobile' => $mobile,
         'gender' => $gender,
-        'room' => $pokoj,
+        'room' => $_POST['pokoj'] ? $_POST['pokoj'] : "",
         'registr' => $registr,
         'birth' => $birth,
         'created_at' => time() // Record the creation time
@@ -51,7 +63,7 @@ foreach ($users as $user) {
         // Prepare the notification data
         $notification = [
             "notification" => "{$first_name} was not checked into the hotel for 2 days",
-            "user_id" => 1, // Replace with actual user ID if necessary
+            "user_id" => 1, 
             "user_name" => $first_name,
             "created_date" => date("d-m-Y")
         ];
@@ -64,10 +76,9 @@ foreach ($users as $user) {
     }
 }
 
-// Only write to the notification file if new notifications were added
-if ($notifications_added) {
-    file_put_contents($notification_file_path, json_encode($notifications_array, JSON_PRETTY_PRINT));
-}
+// if ($notifications_added) {
+//     file_put_contents($notification_file_path, json_encode($notifications_array, JSON_PRETTY_PRINT));
+// }
 
 ?>
 
@@ -75,6 +86,3 @@ if ($notifications_added) {
 
 
 
-
-
-// Rest of your existing PHP script...
